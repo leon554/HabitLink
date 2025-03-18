@@ -18,6 +18,22 @@
             "headers": {
                 "Access-Control-Allow-Origin": "*"
             }
+        },
+        {
+            "src": "/auth/(.*)", 
+            "dest": "server.js", 
+            "methods": ["FECTH","GET", "POST", "PUT", "DELETE"], 
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            }
+        },
+        {
+            "src": "/user/(.*)", 
+            "dest": "server.js", 
+            "methods": ["FECTH","GET", "POST", "PUT", "DELETE"], 
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            }
         }
     ]
 }
