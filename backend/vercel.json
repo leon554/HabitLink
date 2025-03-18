@@ -21,7 +21,7 @@
         },
         {
             "src": "/auth/(.*)", 
-            "dest": "server.js", 
+            "dest": "routes/auth.js", 
             "methods": ["FECTH","GET", "POST", "PUT", "DELETE"], 
             "headers": {
                 "Access-Control-Allow-Origin": "*"

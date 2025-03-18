@@ -31,10 +31,6 @@ router.post("/login", async (req, res) => {
             const tokenPayload = {email: user.email}
             const accessToken = generateAccessToken(tokenPayload)
             const refreshToken = jwt.sign(tokenPayload, process.env.REFRESH_TOKEN_SECRET)
-            res.setHeader('Access-Control-Allow-Origin', 'https://habit-link-4qow.vercel.app');  // Allow the specific domain
-            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-            res.setHeader('Access-Control-Allow-Credentials', 'true');
             res.status(201).json({accessToken: accessToken, refreshToken: refreshToken})
         }else{
             res.status(401).json({msg: "Wrong Password"})
