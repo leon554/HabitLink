@@ -5,10 +5,17 @@ const userRoutes = require("./routes/users")
 const cors = require("cors");
 
 const app = express()
-app.options('*', cors());
-app.use(cors({
-  origin: "*"
-}));
+app.use(cors());
+const options = [
+  cors({
+    origin: "*",
+    methods: "*",
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  }),
+];
+
+app.use(options);
 app.use(express.json())
 mongoose.connect(process.env.MONGO_URI)
 app.use("/auth", authRoutes)
