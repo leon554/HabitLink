@@ -23,7 +23,7 @@ function App() {
               <Route path="/log" element={<Log/>}/>
             </Route>
           </Routes>
-        </Router>
+        </Router> 
       </UserProvider>
     </>
   ); 
