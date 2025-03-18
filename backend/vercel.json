@@ -12,7 +12,10 @@
     ],
     "routes": [
         {
-            "src": "/(.*)", "dest": "server.js", "method": ["GET", "POST", "PUT", "DELETE"], "Headers": {
+            "src": "/(.*)", 
+            "dest": "server.js", 
+            "method": ["GET", "POST", "PUT", "DELETE"], 
+            "headers": {
                 "Access-Control-Allow-Origin": "*"
             }
         }
