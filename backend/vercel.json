@@ -10,32 +10,7 @@
             "use": "@vercel/static"
         }
     ],
-    "routes": [
-        {
-            "src": "/(.*)", 
-            "dest": "server.js", 
-            "methods": ["FECTH","GET", "POST", "PUT", "DELETE"], 
-            "headers": {
-                "Access-Control-Allow-Origin": "https://habit-link-4qow.vercel.app/"
-            }
-        },
-        {
-            "src": "/auth/(.*)", 
-            "dest": "routes/auth.js", 
-            "methods": ["FECTH","GET", "POST", "PUT", "DELETE"], 
-            "headers": {
-                "Access-Control-Allow-Origin": "https://habit-link-4qow.vercel.app/"
-            }
-        },
-        {
-            "src": "/user/(.*)", 
-            "dest": "server.js", 
-            "methods": ["FECTH","GET", "POST", "PUT", "DELETE"], 
-            "headers": {
-                "Access-Control-Allow-Origin": "*"
-            }
-        }
-    ],
+    
     "headers": [
     {
       "source": "/(.*)",
