@@ -16,7 +16,7 @@
             "dest": "server.js", 
             "methods": ["FECTH","GET", "POST", "PUT", "DELETE"], 
             "headers": {
-                "Access-Control-Allow-Origin": "*"
+                "Access-Control-Allow-Origin": "https://habit-link-4qow.vercel.app/"
             }
         },
         {
@@ -24,7 +24,7 @@
             "dest": "routes/auth.js", 
             "methods": ["FECTH","GET", "POST", "PUT", "DELETE"], 
             "headers": {
-                "Access-Control-Allow-Origin": "*"
+                "Access-Control-Allow-Origin": "https://habit-link-4qow.vercel.app/"
             }
         },
         {
