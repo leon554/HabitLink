@@ -180,7 +180,7 @@ export default function NewHabit() {
                     outlineWidth: unit == "hours" ? "0px" : "1px",
                     scale: unit == "hours" ? "1.1" : "1"
                   }}
-                  onClick={() => {setUnit("hour"); setCustomUnit("")}}>
+                  onClick={() => {setUnit("hours"); setCustomUnit("")}}>
                   Hours
                 </button>
                 <button
