@@ -12,6 +12,7 @@ interface HabitLogProps {
   name: string;
   numeric: boolean;
   color: string;
+  unit: string
   id: string;
   completeHabit: (data: number, id: string) => void;
 }
@@ -38,7 +39,7 @@ export default function HabitLog(props: HabitLogProps) {
   }
 
   async function updateHabit() {
-    const refreshToken = localStorage.getItem("refreshToken")
+    const refreshToken = localStorage.getItem("refreshToken");
     if (refreshToken === null) {
       navigate("/signup");
       return;
@@ -48,47 +49,52 @@ export default function HabitLog(props: HabitLogProps) {
       navigate("/signup");
       return;
     }
-    setIsUpdating(true)
+    setIsUpdating(true);
     const HabitName = name === "" ? props.name : name;
 
-    const res = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/updatehabit`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${loginRes.accessToken}`,
-      },
-      body: JSON.stringify({
-        color: props.color,
-        name: HabitName,
-        id: props.id,
-        numeric: numeric,
-      }),
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/updatehabit`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${loginRes.accessToken}`,
+        },
+        body: JSON.stringify({
+          color: props.color,
+          name: HabitName,
+          id: props.id,
+          numeric: numeric,
+        }),
+      }
+    );
 
-    setIsUpdating(false)
-    if(res.status === 206) {
-      alert("Can't edit data in sample data mode click logout and create a acount to edit data")
-      return 
+    setIsUpdating(false);
+    if (res.status === 206) {
+      alert(
+        "Can't edit data in sample data mode click logout and create a acount to edit data"
+      );
+      return;
     }
     if (res.status != 201) {
       alert("Server Errror");
       return;
     }
 
-    UpdateHabitInMemory()
-    setEdit(false)
+    UpdateHabitInMemory();
+    setEdit(false);
   }
 
   function UpdateHabitInMemory() {
-    const habits = User.habits
-    const currentHabit = habits?.find(h => h.habitName == props.name)
+    const habits = User.habits;
+    const currentHabit = habits?.find((h) => h.habitName == props.name);
     currentHabit!.habitName = name === "" ? props.name : name;
-    currentHabit!.numeric = numeric
-    User.setHabits([...habits!])
+    currentHabit!.numeric = numeric;
+    User.setHabits([...habits!]);
   }
 
   async function deleteHabit() {
-    const refreshtoken = localStorage.getItem("refreshToken")
+    const refreshtoken = localStorage.getItem("refreshToken");
     if (refreshtoken === null) {
       navigate("/signup");
       return;
@@ -99,27 +105,32 @@ export default function HabitLog(props: HabitLogProps) {
       return;
     }
 
-    const res = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/deletehabit`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${loginRes.accessToken}`,
-      },
-      body: JSON.stringify({ id: props.id }),
-    });
-    
+    const res = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/deletehabit`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${loginRes.accessToken}`,
+        },
+        body: JSON.stringify({ id: props.id }),
+      }
+    );
+
     if (res.status === 201) {
       const habits = User.habits!.filter((h) => h.habitName != props.name);
       User.setHabits([...habits]);
-    }else if(res.status === 206) {
-      alert("Can't edit data in sample data mode click logout and create a acount to edit data")
-      setIsUpdating(false)
-      return 
+    } else if (res.status === 206) {
+      alert(
+        "Can't edit data in sample data mode click logout and create a acount to edit data"
+      );
+      setIsUpdating(false);
+      return;
     } else {
       alert("server error");
     }
 
-    setEdit(false)
+    setEdit(false);
   }
 
   return (
@@ -131,15 +142,18 @@ export default function HabitLog(props: HabitLogProps) {
         <div className="flex gap-3">
           <div
             style={{ display: `${props.numeric ? "" : "none"}` }}
-            className="flex items-center"
-          >
-            <Numeric setValue={setData} value={data} color={props.color} unit="km"/>
+            className="flex items-center">
+            <Numeric
+              setValue={setData}
+              value={data}
+              color={props.color}
+              unit={uppercase(props.unit != null ? props.unit : "")}
+            />
           </div>
           <button
             className="rounded-md  p-2 font-semibold text-slate-600 text-xs hover:cursor-pointer hover:bg-gray-200 transition delay-50 duration-300 ease-in-out flex justify-center h-8 w-8 items-center outline-1 outline-slate-400"
-            onClick={() => complete()}
-          >
-            <FaCheck style={{ display: loading ? "none" : "" }}/>
+            onClick={() => complete()}>
+            <FaCheck style={{ display: loading ? "none" : "" }} />
             <AiOutlineLoading
               className="animate-spin"
               style={{ display: !loading ? "none" : "" }}
@@ -147,8 +161,7 @@ export default function HabitLog(props: HabitLogProps) {
           </button>
           <button
             className="bg-white rounded-md cursor-pointer outline-1 flex justify-center h-8 items-center hover:bg-gray-200 transition delay-50 duration-300 ease-in-out outline-slate-400"
-            onClick={() => setEdit(!edit)}
-          >
+            onClick={() => setEdit(!edit)}>
             <CiMenuKebab color="#314158" size={18} />
           </button>
         </div>
@@ -160,9 +173,9 @@ export default function HabitLog(props: HabitLogProps) {
     if (!edit) return;
     return (
       <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-3 justify-between flex-wrap [@media(max-width:400px)]:justify-center">
+        <div className="flex items-center gap-3 justify-between flex-wrap [@media(max-width:400px)]:justify-strech ">
           <input
-            className="border-1 rounded-sm p-1 border-slate-400 text-sm"
+            className="border-1 rounded-sm p-1 border-slate-400 text-sm [@media(max-width:400px)]:w-full"
             type="habitName"
             name="habitName"
             id="habitName"
@@ -176,16 +189,15 @@ export default function HabitLog(props: HabitLogProps) {
           </div>
           <button
             className="outline-1 p-1 rounded-md outline-slate-400 cursor-pointer hover:bg-gray-200 transition delay-50 duration-300 ease-in-out"
-            onClick={() => deleteHabit()}
-          >
+            onClick={() => deleteHabit()}>
             <MdDeleteOutline color="#45556c" />
           </button>
+          
         </div>
         <div className=" flex justify-stretch">
           <button
             className="bg-green-700 rounded-md text-sm p-1 text-white hover:cursor-pointer hover:bg-green-800 transition delay-50 duration-300 ease-in-out w-full flex justify-center"
-            onClick={() => updateHabit()}
-          >
+            onClick={() => updateHabit()}>
             {`${isUpdating ? " " : "Save"}`}
             <AiOutlineLoading
               className="animate-spin"

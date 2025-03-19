@@ -19,6 +19,7 @@ router.post("/createhabit", authenticateToken, async (req, res) => {
                 habitName: name, 
                 color: req.body.color, 
                 numeric: req.body.numeric, 
+                unit: req.body.unit,
                 completions: []
             }} 
         })
@@ -58,7 +59,7 @@ router.put("/updatehabit", authenticateToken, async (req, res) => {
     const numeric = req.body.numeric
     const id = req.body.id
     if(req.user.email === sampleDataEmail) {res.sendStatus(206); return}
-    if(name == null || color == null || id == null || numeric == null) return req.status(401).json({msg: "color or name not defined"})
+    if(name == null || color == null || id == null || numeric == null ) return res.status(401).json({msg: "color or name not defined"})
     try {
         const result = await User.updateOne({
             email: req.user.email, "habits._id": id

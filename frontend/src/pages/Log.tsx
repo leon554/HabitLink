@@ -84,6 +84,7 @@ export default function Log() {
                     numeric={h.numeric}
                     color={h.color}
                     id={h._id}
+                    unit={h.unit}
                     completeHabit={completeHabit}
                   />
                 </div>
@@ -98,6 +99,7 @@ export default function Log() {
                     name={h.habitName}
                     numeric={h.numeric}
                     color={h.color}
+                    unit={h.unit}
                     id={h._id}
                     completeHabit={completeHabit}
                   />

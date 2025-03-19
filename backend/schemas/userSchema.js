@@ -9,6 +9,7 @@ const habitSchema = new mongoose.Schema({
         type: String,
     },
     numeric: Boolean,
+    unit: String,
     color: String,
     completions: [completionSchema]
 })

@@ -11,6 +11,7 @@ export default function NewHabit() {
   const [colorIndex, setColorIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
   const [unit, setUnit] = useState("");
+  const [customUnit, setCustomUnit] = useState("")
   const colors = [
     "#b91c1c",
     "#c2410c",
@@ -57,6 +58,7 @@ export default function NewHabit() {
             name: name,
             color: colors[colorIndex],
             numeric: numeric,
+            unit: unit == "" ? customUnit : unit
           }),
         }
       );
@@ -166,20 +168,20 @@ export default function NewHabit() {
                     outlineWidth: unit == "km" ? "0px" : "1px",
                     scale: unit == "km" ? "1.1" : "1"
                   }}
-                  onClick={() => setUnit("km")}>
+                  onClick={() => {setUnit("km"); setCustomUnit("")}}>
                   Km
                 </button>
                 <button
                   className="text-sm flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
                   type="button"
                   style={{
-                    backgroundColor: unit == "hour" ? "#008236" : "white",
-                    color: unit == "hour" ? "white" : "#364153",
+                    backgroundColor: unit == "hours" ? "#008236" : "white",
+                    color: unit == "hours" ? "white" : "#364153",
                     outlineWidth: unit == "hour" ? "0px" : "1px",
-                    scale: unit == "hour" ? "1.1" : "1"
+                    scale: unit == "hours" ? "1.1" : "1"
                   }}
-                  onClick={() => setUnit("hour")}>
-                  Hour
+                  onClick={() => {setUnit("hour"); setCustomUnit("")}}>
+                  Hours
                 </button>
                 <button
                   className="text-sm flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
@@ -190,7 +192,7 @@ export default function NewHabit() {
                     outlineWidth: unit == "min" ? "0px" : "1px",
                     scale: unit == "min" ? "1.1" : "1"
                   }}
-                  onClick={() => setUnit("min")}>
+                  onClick={() => {setUnit("min"); setCustomUnit("")}}>
                   Min
                 </button>
                 <button
@@ -202,7 +204,7 @@ export default function NewHabit() {
                     outlineWidth: unit == "sec" ? "0px" : "1px",
                     scale: unit == "sec" ? "1.1" : "1"
                   }}
-                  onClick={() => setUnit("sec")}>
+                  onClick={() => {setUnit("sec"); setCustomUnit("")}}>
                   Sec
                 </button>
               </div>
@@ -212,8 +214,9 @@ export default function NewHabit() {
                   type="text"
                   className=" w-full outline-1 outline-gray-500 rounded-md text-sm p-1 text-gray-700"
                   placeholder="Enter Unit..."
-                  onChange={e => setUnit(e.target.value)}
+                  onChange={e => {setCustomUnit(e.target.value), setUnit("")}}
                   maxLength={5}
+                  value={customUnit}
                 />
               </div>
             </div>

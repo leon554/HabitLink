@@ -9,6 +9,7 @@ export interface HabitType {
   habitName: string;
   color: string;
   numeric: boolean;
+  unit: string;
   _id: string;
   completions: CompletionType[];
 }

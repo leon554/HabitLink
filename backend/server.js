@@ -15,8 +15,8 @@ const options = [
   }),
 ];
 
-app.use(options);
-app.use(express.json())
+app.use(options); 
+app.use(express.json()) 
 mongoose.connect(process.env.MONGO_URI)
 app.use("/auth", authRoutes)
 app.use("/api", userRoutes)
