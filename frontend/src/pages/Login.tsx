@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { userContext } from "../components/UserProvider";
-import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading } from "react-icons/ai";
 
 export default function Login() {
@@ -9,13 +8,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const User = useContext(userContext);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const refreshToken = localStorage.getItem("refreshToken");
-    if (refreshToken == null) return;
-    navigate("/home");
-  }, []);
   
   function login() {
     setLoading(true);

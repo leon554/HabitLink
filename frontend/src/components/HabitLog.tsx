@@ -16,7 +16,7 @@ interface HabitLogProps {
   completeHabit: (data: number, id: string) => void;
 }
 export default function HabitLog(props: HabitLogProps) {
-  const [data, setData] = useState<string>("1");
+  const [data, setData] = useState<string>("0");
   const [loading, setLoading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -33,7 +33,7 @@ export default function HabitLog(props: HabitLogProps) {
     }
     setLoading(true);
     await props.completeHabit(props.numeric ? Number(data) : 1, props.id);
-    setData("");
+    setData("0");
     setLoading(false);
   }
 
@@ -133,7 +133,7 @@ export default function HabitLog(props: HabitLogProps) {
             style={{ display: `${props.numeric ? "" : "none"}` }}
             className="flex items-center"
           >
-            <Numeric setValue={setData} value={data} color={props.color} />
+            <Numeric setValue={setData} value={data} color={props.color} unit="km"/>
           </div>
           <button
             className="rounded-md  p-2 font-semibold text-slate-600 text-xs hover:cursor-pointer hover:bg-gray-200 transition delay-50 duration-300 ease-in-out flex justify-center h-8 w-8 items-center outline-1 outline-slate-400"

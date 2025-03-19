@@ -3,27 +3,24 @@ import { corr } from "mathjs";
 
 type Completion = {
   data: number;
-  date: number; // Unix millisecond timestamp
+  date: number; 
 };
 
 type CompletionWithHabitName = Completion & { habitName: string };
 
 function getLocalDate(timestamp: number): number {
   const date = new Date(timestamp);
-  // Adjust for local timezone (JavaScript automatically does this)
-  date.setHours(0, 0, 0, 0); // Normalize to the start of the day (midnight)
-  return date.getTime(); // Return as Unix millisecond timestamp
+  date.setHours(0, 0, 0, 0); 
+  return date.getTime(); 
 }
 
 export function groupCompletionsByDay(habits: HabitType[]): { [key: number]: CompletionWithHabitName[] } {
   const completionsByDay: { [key: number]: CompletionWithHabitName[] } = {};
   const habitNames = habits.map(habit => habit.habitName);
 
-  // Iterate through each habit
   habits.forEach(habit => {
     habit.completions.forEach(completion => {
       const localDate = getLocalDate(Number(completion.date));
-      // If the day doesn't exist yet, create it
       if (!completionsByDay[localDate]) {
         completionsByDay[localDate] = habitNames.map(name => ({
           data: 0,
@@ -32,7 +29,6 @@ export function groupCompletionsByDay(habits: HabitType[]): { [key: number]: Com
         }));
       }
 
-      // Update the completion for the specific habit
       const habitCompletion = completionsByDay[localDate].find(item => item.habitName === habit.habitName);
       if (habitCompletion) {
         habitCompletion.data = completion.data;
@@ -40,7 +36,6 @@ export function groupCompletionsByDay(habits: HabitType[]): { [key: number]: Com
     });
   });
 
-  // Sort the completionsByDay object by keys (dates) in ascending order
   const sortedCompletionsByDay: { [key: number]: CompletionWithHabitName[] } = {};
   Object.keys(completionsByDay)
     .sort((a, b) => Number(a) - Number(b))

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { HabitType, userContext } from "../components/UserProvider";
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { getCorrels } from "../components/calc";
 import { IoAddCircleOutline } from "react-icons/io5";
 
@@ -20,45 +20,13 @@ export default function Home() {
   const [corels, setCorels] = useState<Corels>({});
 
   const User = useContext(userContext);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    let refreshToken = localStorage.getItem("refreshToken");
-    if (refreshToken == null) {
-      navigate("/signin");
-      return;
-    }
-    const fecthHabits = async () => {
-      const loginRes = await User.login(refreshToken);
-      if (!loginRes.loggedIn) {
-        navigate("/signin");
-        return;
-      }
-      if(User.habits != null){
-        return
-      }
-      const res = await getHabitRes(loginRes!.accessToken);
-      if (res.status == 200) {
-        const data = await res.json()
-        User.setHabits([...data]);
-      }
-    };
-    fecthHabits();
-  }, []);
   useEffect(() => {
     if (selectedHabit == null) return;
     if (User.habits == null) return;
     setCorels(getCorrels(User.habits, selectedHabit));
   }, [selectedHabit]);
-  async function getHabitRes(accessToken: string) {
-    return await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/habits`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-  }
+ 
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}

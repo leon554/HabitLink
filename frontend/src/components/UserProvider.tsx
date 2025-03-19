@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 
 export interface CompletionType {
   data: number;
@@ -64,13 +64,6 @@ export default function UserProvider(props: Props) {
     initialUserValues.timeAccesTokenCreated
   );
   const AccesTokenRefreshTime = 10 * 60 * 1000;
-
-  useEffect(() => {
-    const refreshToken = localStorage.getItem("refreshToken");
-    if (refreshToken == null) return;
-    console.log("logged in ");
-    setLoggedIn(true);
-  }, []);
 
   async function login(refreshToken: string) {
     if (timeAccesTokenCreated != null) {

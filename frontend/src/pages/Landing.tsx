@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { useEffect, useState } from "react";
 import HabitCard from "../components/HabitCard";
 import TextCard from "../components/TextCard";
@@ -15,12 +15,6 @@ import { motion } from "motion/react";
 export default function Landing() {
   const [count, setCount] = useState([81, 34, -45, -77]);
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    const refreshToken = localStorage.getItem("refreshToken");
-    if (refreshToken === null) return;
-    navigate("/home", { replace: false });
-  }, []);
   useEffect(() => {
     const interval = setInterval(() => {
       const newData = [];

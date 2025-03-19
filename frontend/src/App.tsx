@@ -9,6 +9,7 @@ import NewHabit from "./pages/NewHabit";
 import Log from "./pages/Log";
 
 function App() {
+
   return (
     <>
       <UserProvider>

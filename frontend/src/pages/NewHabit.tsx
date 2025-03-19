@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Switch from "../components/Switch";
 import { AiOutlineLoading } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ export default function NewHabit() {
   const [numeric, setNumeric] = useState(false);
   const [colorIndex, setColorIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
+  const [unit, setUnit] = useState("");
   const colors = [
     "#b91c1c",
     "#c2410c",
@@ -30,13 +31,6 @@ export default function NewHabit() {
   ];
   const navigate = useNavigate();
   const User = useContext(userContext);
-  useEffect(() => {
-    const refreshToken = localStorage.getItem("refreshToken");
-    if (refreshToken == null) {
-      navigate("/signin");
-      return;
-    }
-  }, []);
 
   function createHabit() {
     if (name == "" || colorIndex == -1) {
@@ -51,18 +45,21 @@ export default function NewHabit() {
         navigate("/signin");
         return;
       }
-      const res = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/createhabit`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${logInRes.accessToken}`,
-        },
-        body: JSON.stringify({
-          name: name,
-          color: colors[colorIndex],
-          numeric: numeric,
-        }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/createhabit`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${logInRes.accessToken}`,
+          },
+          body: JSON.stringify({
+            name: name,
+            color: colors[colorIndex],
+            numeric: numeric,
+          }),
+        }
+      );
       if (res.status == 201) {
         const res = await getHabitRes(logInRes.accessToken);
         if (res.status == 200) {
@@ -70,8 +67,10 @@ export default function NewHabit() {
         }
         setLoading(false);
         navigate("/home");
-      }else if(res.status === 206) {
-        alert("Can't edit data in sample data mode click logout and create a acount to edit data")
+      } else if (res.status === 206) {
+        alert(
+          "Can't edit data in sample data mode click logout and create a acount to edit data"
+        );
         setLoading(false);
       } else if (res.status == 401) {
         setLoading(false);
@@ -84,21 +83,23 @@ export default function NewHabit() {
     create();
   }
   async function getHabitRes(accessToken: string) {
-    return await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/habits`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    return await fetch(
+      `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/habits`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
   }
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="m-auto flex justify-center  mt-30 max-[460px]:mt-20"
-    >
+      className="m-auto flex justify-center  mt-30 max-[460px]:mt-20">
       <div className="border-3 rounded-md shadow-[6px_6px_0px_#008236] p-6 bg-white flex flex-col justify-center items-center max-w-[400px] w-[90%]">
         <h1 className="text-2xl font-bold font-sans">Create a new habit</h1>
         <br />
@@ -113,17 +114,20 @@ export default function NewHabit() {
             id="habitname"
             placeholder="e.g Gym"
             value={name}
-            onChange={(e) => (e.target.value.length <= 15) ? setName(e.target.value) : ""}
+            onChange={(e) =>
+              e.target.value.length <= 15 ? setName(e.target.value) : ""
+            }
           />
           <div className="flex justify-between mt-0.5 mb-0 pr-1">
-            <p className="text-[12px] text-gray-600">Give your habit a clear, concise name</p>
+            <p className="text-[12px] text-gray-600">
+              Give your habit a clear, concise name
+            </p>
             <p className="text-[12px] text-gray-600">{name.length}/15</p>
           </div>
 
           <label
             className="text-sm font-medium mt-3 mb-1.5"
-            htmlFor="repassword"
-          >
+            htmlFor="repassword">
             Color
           </label>
           <div className="flex flex-wrap gap-2 ">
@@ -135,8 +139,7 @@ export default function NewHabit() {
                     backgroundColor: c,
                     border: `${i === colorIndex ? "solid 1px black" : ""}`,
                   }}
-                  onClick={() => setColorIndex(i)}
-                ></div>
+                  onClick={() => setColorIndex(i)}></div>
               );
             })}
           </div>
@@ -146,11 +149,80 @@ export default function NewHabit() {
           </label>
           <Switch ticked={false} setStatus={setNumeric} />
 
+          <div
+            className="mt-2 duration-500 ease-in-out"
+            style={{
+              display: numeric ? "" : "none",
+            }}>
+            <h1 className="text-sm font-medium mb-2 mt-3">Units</h1>
+            <div className="flex gap-2.5 items-center max-[460px]:flex-col">
+              <div className=" w-full flex gap-3 justify-stretch  ">
+                <button
+                  className="text-sm flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
+                  type="button"
+                  style={{
+                    backgroundColor: unit == "km" ? "#008236" : "white",
+                    color: unit == "km" ? "white" : "#364153",
+                    outlineWidth: unit == "km" ? "0px" : "1px",
+                    scale: unit == "km" ? "1.1" : "1"
+                  }}
+                  onClick={() => setUnit("km")}>
+                  Km
+                </button>
+                <button
+                  className="text-sm flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
+                  type="button"
+                  style={{
+                    backgroundColor: unit == "hour" ? "#008236" : "white",
+                    color: unit == "hour" ? "white" : "#364153",
+                    outlineWidth: unit == "hour" ? "0px" : "1px",
+                    scale: unit == "hour" ? "1.1" : "1"
+                  }}
+                  onClick={() => setUnit("hour")}>
+                  Hour
+                </button>
+                <button
+                  className="text-sm flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
+                  type="button"
+                  style={{
+                    backgroundColor: unit == "min" ? "#008236" : "white",
+                    color: unit == "min" ? "white" : "#364153",
+                    outlineWidth: unit == "min" ? "0px" : "1px",
+                    scale: unit == "min" ? "1.1" : "1"
+                  }}
+                  onClick={() => setUnit("min")}>
+                  Min
+                </button>
+                <button
+                  className="text-sm flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
+                  type="button"
+                  style={{
+                    backgroundColor: unit == "sec" ? "#008236" : "white",
+                    color: unit == "sec" ? "white" : "#364153",
+                    outlineWidth: unit == "sec" ? "0px" : "1px",
+                    scale: unit == "sec" ? "1.1" : "1"
+                  }}
+                  onClick={() => setUnit("sec")}>
+                  Sec
+                </button>
+              </div>
+              <div className="flex gap-3 items-center w-full justify-stretch">
+                <p className="font-semibold text-sm ">or</p>
+                <input
+                  type="text"
+                  className=" w-full outline-1 outline-gray-500 rounded-md text-sm p-1 text-gray-700"
+                  placeholder="Enter Unit..."
+                  onChange={e => setUnit(e.target.value)}
+                  maxLength={5}
+                />
+              </div>
+            </div>
+          </div>
+
           <button
             className="bg-green-700 rounded-md mt-5 p-2 font-semibold text-white text-sm hover:cursor-pointer hover:bg-green-800 transition delay-50 duration-300 ease-in-out flex justify-center h-9"
             type="button"
-            onClick={() => createHabit()}
-          >
+            onClick={() => createHabit()}>
             {`${loading ? " " : "Create Habit"}`}
             <AiOutlineLoading
               className="animate-spin"
