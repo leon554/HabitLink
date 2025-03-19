@@ -177,7 +177,7 @@ export default function NewHabit() {
                   style={{
                     backgroundColor: unit == "hours" ? "#008236" : "white",
                     color: unit == "hours" ? "white" : "#364153",
-                    outlineWidth: unit == "hour" ? "0px" : "1px",
+                    outlineWidth: unit == "hours" ? "0px" : "1px",
                     scale: unit == "hours" ? "1.1" : "1"
                   }}
                   onClick={() => {setUnit("hour"); setCustomUnit("")}}>
