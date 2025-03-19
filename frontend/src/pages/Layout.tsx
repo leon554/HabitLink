@@ -38,7 +38,7 @@ export function Layout() {
     if(User.loggedIn && pathToDirectToHome.includes(location.pathname)){
       navigate("/home")
     }
-    if(!User.loggedIn && protectedPaths.includes(location.pathname)){
+    if(!User.loggedIn && protectedPaths.includes(location.pathname) && localStorage.getItem("refreshToken") == null){
       navigate("/")
     }
 
