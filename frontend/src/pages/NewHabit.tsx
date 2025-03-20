@@ -4,6 +4,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { userContext } from "../components/UserProvider";
 import { motion } from "motion/react";
+import { AlertContext } from "../components/AlertProvider";
 
 export default function NewHabit() {
   const [name, setName] = useState("");
@@ -32,10 +33,11 @@ export default function NewHabit() {
   ];
   const navigate = useNavigate();
   const User = useContext(userContext);
+  const Alert = useContext(AlertContext)
 
   function createHabit() {
     if (name == "" || colorIndex == -1) {
-      alert("Habit name or color unspecified");
+      Alert.alert("Habit name or color unspecified");
       return;
     }
     setLoading(true);
@@ -70,16 +72,16 @@ export default function NewHabit() {
         setLoading(false);
         navigate("/home");
       } else if (res.status === 206) {
-        alert(
+        Alert.alert(
           "Can't edit data in sample data mode click logout and create a acount to edit data"
         );
         setLoading(false);
       } else if (res.status == 401) {
         setLoading(false);
-        alert("habit allready exists");
+        Alert.alert("habit allready exists");
       } else {
         setLoading(false);
-        alert("Server error");
+        Alert.alert("Server error");
       }
     };
     create();

@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { userContext } from "../components/UserProvider";
 import { AiOutlineLoading } from "react-icons/ai";
+import { AlertContext } from "../components/AlertProvider";
 
 
 export default function Login() {
@@ -9,6 +10,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const User = useContext(userContext);
+  const Alert = useContext(AlertContext)
   
   function login() {
     setLoading(true);
@@ -31,7 +33,7 @@ export default function Login() {
       } else {
         setEmail("");
         setPassword("");
-        alert("Wrong email or password");
+        Alert.alert("Wrong email or password");
       }
     };
     trylogin();

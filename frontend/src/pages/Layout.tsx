@@ -2,9 +2,12 @@ import { Navbar } from "../components/Navbar";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect} from "react";
 import { userContext } from "../components/UserProvider";
+import { AlertContext } from "../components/AlertProvider";
+import Alert from "../components/Alert";
 
 export function Layout() {
   const User = useContext(userContext)
+  const Alertd = useContext(AlertContext)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -53,10 +56,13 @@ export function Layout() {
   }
   return (
     <>
+    <Alert />
+    <div className={`${Alertd.showing ? "pointer-events-none" : "pointer-events-auto"}  w-full h-full`}>
       <Navbar />
       <main>
         <Outlet />
       </main>
+    </div>
     </>
   );
 }

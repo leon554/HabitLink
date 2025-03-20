@@ -7,27 +7,29 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NewHabit from "./pages/NewHabit";
 import Log from "./pages/Log";
+import AlertProvider from "./components/AlertProvider";
 
 function App() {
-
   return (
     <>
-      <UserProvider>
-        <Router>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<Landing />} />
-              <Route path="/signin" element={<Signin />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/login" element={<Login/>}/>
-              <Route path="/newhabit" element={<NewHabit/>}/>
-              <Route path="/log" element={<Log/>}/>
-            </Route>
-          </Routes>
-        </Router> 
-      </UserProvider>
+      <AlertProvider>
+        <UserProvider>
+          <Router>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/" element={<Landing />} />
+                <Route path="/signin" element={<Signin />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/newhabit" element={<NewHabit />} />
+                <Route path="/log" element={<Log />} />
+              </Route>
+            </Routes>
+          </Router>
+        </UserProvider>
+      </AlertProvider>
     </>
-  ); 
+  );
 }
 
 export default App;

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { AiOutlineLoading } from "react-icons/ai";
 import { userContext } from "../components/UserProvider";
+import { AlertContext } from "../components/AlertProvider";
 
 export default function Signin() {
   const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ export default function Signin() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const Alert = useContext(AlertContext)
 
   function signup() {
     if (!validInputs()) return;
@@ -27,18 +29,17 @@ export default function Signin() {
       if (res.status == 201) {
         navigate("/login");
       } else if (res.status == 409) {
-        alert("user allready exits");
+        Alert.alert("user allready exits");
       } else {
-        alert("server error");
+        Alert.alert("server error");
       }
     };
     signup();
   }
   const User = useContext(userContext);
   async function trySample() {
-    alert(
-      "Note in sample data mode nothing can be edited or added you can only interact with the data allready present"
-    );
+
+    Alert.alert("Note in sample data mode nothing can be edited or added you can only interact with the data allready present")
 
     const res = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/auth/login`, {
       method: "POST",
@@ -56,24 +57,24 @@ export default function Signin() {
       User.setAccessToken(accessToken)
       User.setLoggedIn(true);
     } else {
-      alert("Server Error");
+      Alert.alert("Server Error");
     }
   }
   function validInputs() {
     if (email == "" || password == "" || cpassword == "") {
-      alert("Some input fields are not filled in");
+      Alert.alert("Some input fields are not filled in");
       return false;
     }
     if (!email.includes("@") || email.length <= 3) {
-      alert("Invalid Email");
+      Alert.alert("Invalid Email");
       return false;
     }
     if (password.length < 4) {
-      alert("Password to short");
+      Alert.alert("Password to short");
       return false;
     }
     if (password !== cpassword) {
-      alert("Passwords do not match");
+      Alert.alert("Passwords do not match");
       return false;
     }
     return true;

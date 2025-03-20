@@ -7,6 +7,7 @@ import { userContext } from "./UserProvider";
 import { useNavigate } from "react-router-dom";
 import { CiMenuKebab } from "react-icons/ci";
 import { FaCheck } from "react-icons/fa";
+import { AlertContext } from "./AlertProvider";
 
 interface HabitLogProps {
   name: string;
@@ -25,11 +26,12 @@ export default function HabitLog(props: HabitLogProps) {
   const [name, setName] = useState("");
 
   const User = useContext(userContext);
+  const Alert = useContext(AlertContext)
   const navigate = useNavigate();
 
   async function complete() {
     if (props.numeric && data === "") {
-      alert("Click the + or - to set a value");
+      Alert.alert("Click the + or - to set a value");
       return;
     }
     setLoading(true);
@@ -71,13 +73,11 @@ export default function HabitLog(props: HabitLogProps) {
 
     setIsUpdating(false);
     if (res.status === 206) {
-      alert(
-        "Can't edit data in sample data mode click logout and create a acount to edit data"
-      );
+      Alert.alert("Can't edit data in sample data mode click logout and create a acount to edit data")
       return;
     }
     if (res.status != 201) {
-      alert("Server Errror");
+      Alert.alert("Server Errror");
       return;
     }
 
@@ -121,13 +121,13 @@ export default function HabitLog(props: HabitLogProps) {
       const habits = User.habits!.filter((h) => h.habitName != props.name);
       User.setHabits([...habits]);
     } else if (res.status === 206) {
-      alert(
+      Alert.alert(
         "Can't edit data in sample data mode click logout and create a acount to edit data"
       );
       setIsUpdating(false);
       return;
     } else {
-      alert("server error");
+      Alert.alert("server error");
     }
 
     setEdit(false);

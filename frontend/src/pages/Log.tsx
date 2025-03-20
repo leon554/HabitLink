@@ -5,9 +5,11 @@ import HabitLog from "../components/HabitLog";
 import { FaPlus } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
 import { motion } from "motion/react";
+import { AlertContext } from "../components/AlertProvider";
 
 export default function Log() {
   const User = useContext(userContext);
+  const Alert = useContext(AlertContext)
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
@@ -40,7 +42,7 @@ export default function Log() {
       User.setHabits([...habits]);
       return;
     } else if (res.status === 206) {
-      alert(
+      Alert.alert(
         "Can't edit data in sample data mode click logout and create a acount to edit data"
       );
     } else {

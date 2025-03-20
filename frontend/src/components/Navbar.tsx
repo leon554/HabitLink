@@ -75,7 +75,7 @@ export function Navbar() {
   }
 
   return (
-    <div className="bg-green-700 text-white flex items-center fixed top-0 left-0 w-full z-50 p-0">
+    <div className="bg-green-700 text-white flex items-center fixed top-0 left-0 w-full z-40 p-0">
       <h1 className="font-bold text-2xl m-3 max-sm:text-xl">HabitLink</h1>
       <div className="flex-1 flex justify-end h-full">{showBtns()}</div>
     </div>
