@@ -11,7 +11,7 @@ export default function NewHabit() {
   const [colorIndex, setColorIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
   const [unit, setUnit] = useState("");
-  const [customUnit, setCustomUnit] = useState("")
+  const [customUnit, setCustomUnit] = useState("");
   const colors = [
     "#b91c1c",
     "#c2410c",
@@ -58,7 +58,7 @@ export default function NewHabit() {
             name: name,
             color: colors[colorIndex],
             numeric: numeric,
-            unit: unit == "" ? customUnit : unit
+            unit: unit == "" ? customUnit : unit,
           }),
         }
       );
@@ -98,8 +98,8 @@ export default function NewHabit() {
   }
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{  y: 50 }}
+      animate={{  y: 0 }}
       transition={{ duration: 0.5 }}
       className="m-auto flex justify-center  mt-30 max-[460px]:mt-20">
       <div className="border-3 rounded-md shadow-[6px_6px_0px_#008236] p-6 bg-white flex flex-col justify-center items-center max-w-[400px] w-[90%]">
@@ -132,18 +132,17 @@ export default function NewHabit() {
             htmlFor="repassword">
             Color
           </label>
-          <div className="flex flex-wrap gap-2 ">
-            {colors.map((c, i) => {
-              return (
-                <div
-                  className={`w-8 h-8 rounded-sm hover:cursor-pointer grid-flow-row`}
-                  style={{
-                    backgroundColor: c,
-                    border: `${i === colorIndex ? "solid 1px black" : ""}`,
-                  }}
-                  onClick={() => setColorIndex(i)}></div>
-              );
-            })}
+          <div className="grid gap-2 grid-cols-8 grid-rows-2">
+            {colors.map((c, i) => (
+              <div
+                key={i}
+                className="h-8 rounded-sm hover:cursor-pointer"
+                style={{
+                  backgroundColor: c,
+                  border: i === colorIndex ? "solid 1px black" : "",
+                }}
+                onClick={() => setColorIndex(i)}></div>
+            ))}
           </div>
 
           <label className="text-sm font-medium mb-1.5 mt-4" htmlFor="password">
@@ -160,51 +159,63 @@ export default function NewHabit() {
             <div className="flex gap-2.5 items-center max-[460px]:flex-col">
               <div className=" w-full flex gap-3 justify-stretch  ">
                 <button
-                  className="text-sm flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
+                  className="text-[12px] flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
                   type="button"
                   style={{
-                    backgroundColor: unit == "km" ? "#008236" : "white",
-                    color: unit == "km" ? "white" : "#364153",
+                    backgroundColor: unit == "km" ? "#d1d5dc" : "white",
+
                     outlineWidth: unit == "km" ? "0px" : "1px",
-                    scale: unit == "km" ? "1.1" : "1"
+                    scale: unit == "km" ? "1.1" : "1",
                   }}
-                  onClick={() => {setUnit("km"); setCustomUnit("")}}>
+                  onClick={() => {
+                    setUnit("km");
+                    setCustomUnit("");
+                  }}>
                   Km
                 </button>
                 <button
-                  className="text-sm flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
+                  className="text-[12px] flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
                   type="button"
                   style={{
-                    backgroundColor: unit == "hours" ? "#008236" : "white",
-                    color: unit == "hours" ? "white" : "#364153",
+                    backgroundColor: unit == "hours" ? "#d1d5dc" : "white",
+
                     outlineWidth: unit == "hours" ? "0px" : "1px",
-                    scale: unit == "hours" ? "1.1" : "1"
+                    scale: unit == "hours" ? "1.1" : "1",
                   }}
-                  onClick={() => {setUnit("hours"); setCustomUnit("")}}>
+                  onClick={() => {
+                    setUnit("hours");
+                    setCustomUnit("");
+                  }}>
                   Hours
                 </button>
                 <button
-                  className="text-sm flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
+                  className="text-[12px] flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
                   type="button"
                   style={{
-                    backgroundColor: unit == "min" ? "#008236" : "white",
-                    color: unit == "min" ? "white" : "#364153",
+                    backgroundColor: unit == "min" ? "#d1d5dc" : "white",
+
                     outlineWidth: unit == "min" ? "0px" : "1px",
-                    scale: unit == "min" ? "1.1" : "1"
+                    scale: unit == "min" ? "1.1" : "1",
                   }}
-                  onClick={() => {setUnit("min"); setCustomUnit("")}}>
+                  onClick={() => {
+                    setUnit("min");
+                    setCustomUnit("");
+                  }}>
                   Min
                 </button>
                 <button
-                  className="text-sm flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
+                  className="text-[12px] flex-1 text-gray-700 outline-1 p-1 rounded-md outline-gray-500 hover:cursor-pointer  hover:bg-gray-200"
                   type="button"
                   style={{
-                    backgroundColor: unit == "sec" ? "#008236" : "white",
-                    color: unit == "sec" ? "white" : "#364153",
+                    backgroundColor: unit == "sec" ? "#d1d5dc" : "white",
+
                     outlineWidth: unit == "sec" ? "0px" : "1px",
-                    scale: unit == "sec" ? "1.1" : "1"
+                    scale: unit == "sec" ? "1.1" : "1",
                   }}
-                  onClick={() => {setUnit("sec"); setCustomUnit("")}}>
+                  onClick={() => {
+                    setUnit("sec");
+                    setCustomUnit("");
+                  }}>
                   Sec
                 </button>
               </div>
@@ -212,9 +223,11 @@ export default function NewHabit() {
                 <p className="font-semibold text-sm ">or</p>
                 <input
                   type="text"
-                  className=" w-full outline-1 outline-gray-500 rounded-md text-sm p-1 text-gray-700"
+                  className=" w-full outline-1 outline-gray-500 rounded-md text-[12px] p-1 text-gray-700"
                   placeholder="Enter Unit..."
-                  onChange={e => {setCustomUnit(e.target.value), setUnit("")}}
+                  onChange={(e) => {
+                    setCustomUnit(e.target.value), setUnit("");
+                  }}
                   maxLength={5}
                   value={customUnit}
                 />

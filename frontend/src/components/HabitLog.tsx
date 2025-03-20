@@ -137,7 +137,7 @@ export default function HabitLog(props: HabitLogProps) {
     <div className="bg-white border-1 border-gray-400 rounded-md p-3 flex flex-col gap-4">
       <div className=" duration-300 ease-in-out  flex justify-between items-center w-full">
         <div className="flex items-center justify-start gap-2 ">
-          <h1 className="text-lg font-semibold">{uppercase(props.name)}</h1>
+          <h1 className="text-lg font-semibold  max-[400px]:max-w-15 break-all">{uppercase(props.name)}</h1>
         </div>
         <div className="flex gap-3">
           <div

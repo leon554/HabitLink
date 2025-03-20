@@ -1,6 +1,8 @@
 @import "tailwindcss";
 body{
     background-color: #f0fdf4;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.2) 10%, rgba(0, 0, 0, 0) 10%);
+    background-size: 10px 10px;
 }
 @layer utilities {
     /* Hide scrollbar for Chrome, Safari and Opera */

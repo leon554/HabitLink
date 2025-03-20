@@ -51,8 +51,8 @@ export default function Log() {
   }
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{  y: 50 }}
+      animate={{  y: 0 }}
       transition={{ duration: 0.5 }}
       className="flex flex-col  items-center mt-30 max-sm:mt-20">
       <div className="bg-white max-w-150 w-[90%] flex flex-col border-2 rounded-md p-5 gap-4 shadow-[6px_6px_0px_#008236] max-sm:mt-2">
@@ -74,7 +74,7 @@ export default function Log() {
           />
         </div>
 
-        <div className="max-h-[50vh] overflow-y-scroll no-scrollbar pr-1.5 gap-5 flex flex-col pb-1.5">
+        <div className="max-h-[50vh] max-[400px]:max-h-[40vh] overflow-y-scroll no-scrollbar pr-1.5 gap-5 flex flex-col pb-1.5">
           {User.habits?.map((h, _) => {
             if (!h.numeric && h.habitName.toLowerCase().includes(search)) {
               return (

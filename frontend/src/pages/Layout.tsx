@@ -1,6 +1,6 @@
 import { Navbar } from "../components/Navbar";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect} from "react";
 import { userContext } from "../components/UserProvider";
 
 export function Layout() {
@@ -11,7 +11,6 @@ export function Layout() {
   useEffect(() => {
     let refreshToken = localStorage.getItem("refreshToken");
     if (refreshToken == null) { return;}
-
     const fecthHabits = async () => {
       const loginRes = await User.login(refreshToken);
       if (!loginRes.loggedIn) {navigate("/signin"); return; }
@@ -30,11 +29,11 @@ export function Layout() {
       }
     };
     fecthHabits();
-  }, [])
+  }, [User.loggedIn])
+
   useEffect(()=>{
     const protectedPaths = ["/home", "/log", "/newhabit"]
     const pathToDirectToHome = ["/", "/signin", "/login"]
-
     if(User.loggedIn && pathToDirectToHome.includes(location.pathname)){
       navigate("/home")
     }

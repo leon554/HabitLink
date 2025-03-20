@@ -53,10 +53,8 @@ export default function Signin() {
       const accessToken = data.accessToken;
       const refreshToken = data.refreshToken;
       localStorage.setItem("refreshToken", refreshToken);
-      User.accessToken = accessToken;
-      User.loggedIn = true;
-
-      window.location.href = "/home";
+      User.setAccessToken(accessToken)
+      User.setLoggedIn(true);
     } else {
       alert("Server Error");
     }

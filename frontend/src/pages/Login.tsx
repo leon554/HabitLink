@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { userContext } from "../components/UserProvider";
 import { AiOutlineLoading } from "react-icons/ai";
 
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,10 +26,8 @@ export default function Login() {
         const accessToken = data.accessToken;
         const refreshToken = data.refreshToken;
         localStorage.setItem("refreshToken", refreshToken);
-        User.accessToken = accessToken;
-        User.loggedIn = true;
-
-        window.location.href = "/home";
+        User.setAccessToken(accessToken);
+        User.setLoggedIn(true)
       } else {
         setEmail("");
         setPassword("");
