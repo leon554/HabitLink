@@ -76,7 +76,7 @@ export default function Log() {
           />
         </div>
 
-        <div className="max-h-[50vh] max-[400px]:max-h-[40vh] overflow-y-scroll no-scrollbar pr-1.5 gap-5 flex flex-col pb-1.5">
+        <div className="max-h-[50vh] max-[400px]:max-h-[40vh] overflow-y-scroll no-scrollbar  gap-5 flex flex-col pb-1.5">
           {User.habits?.map((h, _) => {
             if (!h.numeric && h.habitName.toLowerCase().includes(search)) {
               return (
