@@ -23,13 +23,13 @@ export default function Select(props: SelectProps) {
         {props.selectedHabit == null
           ? "Select Habit"
           : uppercase(props.selectedHabit.habitName)}
-        <div className="absolute top-full rounded-md p-3 mt-3  flex flex-col justify-start items-start scale-0 origin-top duration-200 bg-white outline-1 outline-gray-300 z-20 w-40" style={{
+        <div className="absolute top-full rounded-md p-3 mt-3  flex flex-col justify-start items-start scale-0 origin-top duration-200 bg-white outline-1 outline-gray-300 z-20 w-fit" style={{
           scale: clicked ? 1 : 0
         }}>
           {props.habits && props.habits.map((h) => {
             return (
               <p
-                className="hover:bg-gray-200 w-full flex justify-start p-1 rounded-md transition duration-100 ease-in-out hover:cursor-pointer"
+                className="hover:bg-gray-200 w-full flex justify-start p-1 rounded-md transition duration-100 ease-in-out hover:cursor-pointer text-nowrap"
                 onClick={() => setHabit(h)}
               >
                 {uppercase(h.habitName)}

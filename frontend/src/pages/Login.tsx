@@ -55,7 +55,7 @@ export default function Login() {
             type="email"
             name="email"
             id="email"
-            placeholder="Enter youre email"
+            placeholder="Enter email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -88,7 +88,7 @@ export default function Login() {
           <br />
         </form>
         <p className="text-sm text-slate-500">
-          Dont have an acount?{" "}
+          Dont have an account?{" "}
           <a className="text-green-700 hover:underline" href="#/signin">
             Sign Up
           </a>

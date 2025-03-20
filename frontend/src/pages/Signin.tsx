@@ -96,7 +96,7 @@ export default function Signin() {
             type="email"
             name="email"
             id="email"
-            placeholder="Enter youre email"
+            placeholder="Enter email"
             value={email}
             onChange={(e) =>
               e.target.value.length <= 35 ? setEmail(e.target.value) : ""
@@ -116,7 +116,7 @@ export default function Signin() {
             name="password"
             id="password"
             autoComplete="on"
-            placeholder="Create a password"
+            placeholder="Create password"
             value={password}
             onChange={(e) =>
               e.target.value.length <= 35 ? setPassword(e.target.value) : ""
@@ -136,7 +136,7 @@ export default function Signin() {
             name="repassword"
             id="repassword"
             autoComplete="on"
-            placeholder="Confirm your password"
+            placeholder="Confirm password"
             value={cpassword}
             onChange={(e) =>
               e.target.value.length <= 35 ? setCpassword(e.target.value) : ""
@@ -167,7 +167,7 @@ export default function Signin() {
           <br />
         </form>
         <p className="text-sm text-slate-500">
-          Already have an acount?{" "}
+          Already have an account?{" "}
           <a className="text-green-700 hover:underline" href="#/login">
             Log in
           </a>

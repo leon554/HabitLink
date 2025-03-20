@@ -6,11 +6,11 @@ import { useState } from "react";
 import { UserType, HabitType } from "./UserProvider";
 import { Corels } from "../pages/Home";
 
-interface HabitCorrelationProps{
-    User: UserType
-    selectedHabit: HabitType | null
-    setSelectedHabit: (selectedHabit: HabitType) => void
-    corels: Corels
+interface HabitCorrelationProps {
+  User: UserType;
+  selectedHabit: HabitType | null;
+  setSelectedHabit: (selectedHabit: HabitType) => void;
+  corels: Corels;
 }
 export default function HabitCorrelations(props: HabitCorrelationProps) {
   const [showInfo, setShowInfo] = useState(false);
@@ -31,7 +31,7 @@ export default function HabitCorrelations(props: HabitCorrelationProps) {
       <div
         className="outline-1 p-2 rounded-md outline-gray-400 mb-4"
         style={{ display: showInfo ? "" : "none" }}>
-        <h1 className="text-sm text-gray-700">
+        <h1 className="text-sm text-gray-700 text-justify">
           Correlation values indicate how strongly habits are related. Positive
           values (green) mean habits tend to occur together, while negative
           values (red) indicate an inverse relationship. Higher percentage
@@ -63,7 +63,8 @@ export default function HabitCorrelations(props: HabitCorrelationProps) {
                         name={uppercase(h.habitName)}
                         value={
                           props.corels &&
-                          Math.round(props.corels[h.habitName] * 100 * 100) / 100
+                          Math.round(props.corels[h.habitName] * 100 * 100) /
+                            100
                         }
                         animate={false}
                       />
@@ -84,5 +85,5 @@ export default function HabitCorrelations(props: HabitCorrelationProps) {
   );
 }
 function uppercase(text: string) {
-    return text.slice(0, 1).toUpperCase() + text.slice(1).toLocaleLowerCase();
+  return text.slice(0, 1).toUpperCase() + text.slice(1).toLocaleLowerCase();
 }
