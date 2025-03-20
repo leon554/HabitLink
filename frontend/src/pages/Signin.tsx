@@ -80,10 +80,10 @@ export default function Signin() {
     return true;
   }
   return (
-    <div className="m-auto flex justify-center items-center min-h-[90vh]">
+    <div className="m-auto flex justify-center items-center min-h-[90vh] max-[390px]:mt-10">
       <div className="border-3 rounded-md shadow-[6px_6px_0px_#008236] p-6 bg-white flex flex-col justify-center items-center max-w-[400px] w-[80%]">
         <h1 className="text-2xl font-bold font-sans">Create an acount</h1>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-slate-500 text-center">
           Start your journey to better habits today
         </p>
         <br />

@@ -30,6 +30,8 @@ export interface UserType {
   setHabits: (habits: HabitType[]) => void;
   login: (refreshToken: string) => Promise<loginReturnType> | loginReturnType;
   timeAccesTokenCreated: number | null;
+  loading: boolean
+  setLoading: (loading: boolean) => void
 }
 
 const initialUserValues: UserType = {
@@ -43,6 +45,8 @@ const initialUserValues: UserType = {
   setEmail: () => null,
   habits: null,
   setHabits: () => null,
+  loading: false,
+  setLoading: () => null,
 
   login: () => {
     return { loggedIn: false, accessToken: "" };
@@ -61,6 +65,7 @@ export default function UserProvider(props: Props) {
   const [id, setId] = useState(initialUserValues.id);
   const [email, setEmail] = useState(initialUserValues.email);
   const [habits, setHabits] = useState(initialUserValues.habits);
+  const [loading, setLoading] = useState(false)
   const [timeAccesTokenCreated, setTimeAccesTokenCreated] = useState(
     initialUserValues.timeAccesTokenCreated
   );
@@ -104,6 +109,8 @@ export default function UserProvider(props: Props) {
         setHabits: setHabits,
         login: login,
         timeAccesTokenCreated: timeAccesTokenCreated,
+        loading: loading,
+        setLoading: setLoading
       }}>
       {props.children}
     </userContext.Provider>

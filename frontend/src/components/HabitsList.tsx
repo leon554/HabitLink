@@ -3,11 +3,12 @@ import { IoStatsChart } from "react-icons/io5";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { HabitType, UserType } from "./UserProvider";
+import { AiOutlineLoading } from "react-icons/ai";
 
-interface HabitListProps{
-    User: UserType
-    selectedHabit: HabitType | null
-    setSelectedHabit: (selectedHabit: HabitType) => void
+interface HabitListProps {
+  User: UserType;
+  selectedHabit: HabitType | null;
+  setSelectedHabit: (selectedHabit: HabitType) => void;
 }
 export default function HabitsList(props: HabitListProps) {
   return (
@@ -43,6 +44,14 @@ export default function HabitsList(props: HabitListProps) {
               </div>
             </div>
           ))
+        ) : props.User.loading ? (
+          <div className=" flex justify-center p-5">
+            <AiOutlineLoading
+              size={40}
+              color="#008236"
+              className="animate-spin"
+            />
+          </div> // Loading state - replace "f" with your desired loading content
         ) : (
           <div className="flex flex-col items-center gap-2 w-full">
             <SlGraph size={40} color="#008236" />
@@ -62,5 +71,5 @@ export default function HabitsList(props: HabitListProps) {
 }
 
 function uppercase(text: string) {
-    return text.slice(0, 1).toUpperCase() + text.slice(1).toLocaleLowerCase();
-  }
+  return text.slice(0, 1).toUpperCase() + text.slice(1).toLocaleLowerCase();
+}

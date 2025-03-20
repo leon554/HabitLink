@@ -14,6 +14,7 @@ export function Layout() {
   useEffect(() => {
     let refreshToken = localStorage.getItem("refreshToken");
     if (refreshToken == null) { return;}
+    User.setLoading(true)
     const fecthHabits = async () => {
       const loginRes = await User.login(refreshToken);
       if (!loginRes.loggedIn) {navigate("/signin"); return; }
@@ -28,8 +29,9 @@ export function Layout() {
         }
 
       }else{
-        alert("Server error")
+        Alertd.alert("Server error")
       }
+      User.setLoading(false)
     };
     fecthHabits();
   }, [User.loggedIn])
@@ -56,13 +58,17 @@ export function Layout() {
   }
   return (
     <>
-    <Alert />
-    <div className={`${Alertd.showing ? "pointer-events-none" : "pointer-events-auto"}  w-full h-full`}>
-      <Navbar />
-      <main>
-        <Outlet />
-      </main>
-    </div>
+      <Alert />
+      <div
+        className={`${
+          Alertd.showing ? "pointer-events-none overflow-hidden fixed inset-0" : "pointer-events-auto"
+        } w-full h-full`}
+      >
+        <Navbar />
+        <main className={`${Alertd.showing ? "overflow-hidden" : ""}`}>
+          <Outlet />
+        </main>
+      </div>
     </>
   );
 }

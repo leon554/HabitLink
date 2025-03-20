@@ -135,14 +135,14 @@ export default function HabitLog(props: HabitLogProps) {
 
   return (
     <div className="bg-white border-1 border-gray-400 rounded-md p-3 flex flex-col gap-4">
-      <div className=" duration-300 ease-in-out  flex justify-between items-center w-full">
-        <div className="flex items-center justify-start gap-2 ">
-          <h1 className="text-lg font-semibold  max-[400px]:max-w-15 break-all">{uppercase(props.name)}</h1>
+      <div className=" duration-300 ease-in-out  flex max-[500px]:flex-col max-[500px]:items-start justify-between items-center w-full">
+        <div className="flex items-center justify-start gap-2 max-[500px]:mb-2">
+          <h1 className="text-lg font-semibold  break-all">{uppercase(props.name)}</h1>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 max-[500px]:w-full">
           <div
             style={{ display: `${props.numeric ? "" : "none"}` }}
-            className="flex items-center">
+            className="flex h-8">
             <Numeric
               setValue={setData}
               value={data}
@@ -151,7 +151,7 @@ export default function HabitLog(props: HabitLogProps) {
             />
           </div>
           <button
-            className="rounded-md  p-2 font-semibold text-slate-600 text-xs hover:cursor-pointer hover:bg-gray-200 transition delay-50 duration-300 ease-in-out flex justify-center h-8 w-8 items-center outline-1 outline-slate-400"
+            className="rounded-md max-[500px]:flex-grow  p-2 font-semibold text-slate-600 text-xs hover:cursor-pointer hover:bg-gray-200 transition delay-50 duration-300 ease-in-out flex justify-center h-8 w-8 items-center outline-1 outline-slate-400"
             onClick={() => complete()}>
             <FaCheck style={{ display: loading ? "none" : "" }} />
             <AiOutlineLoading
@@ -173,9 +173,9 @@ export default function HabitLog(props: HabitLogProps) {
     if (!edit) return;
     return (
       <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-3 justify-between flex-wrap [@media(max-width:400px)]:justify-strech ">
+        <div className="flex items-center gap-3 justify-between flex-wrap [@media(max-width:500px)]:justify-strech ">
           <input
-            className="border-1 rounded-sm p-1 border-slate-400 text-sm [@media(max-width:400px)]:w-full"
+            className="border-1 rounded-sm p-1 border-slate-400 text-sm [@media(max-width:500px)]:w-full"
             type="habitName"
             name="habitName"
             id="habitName"

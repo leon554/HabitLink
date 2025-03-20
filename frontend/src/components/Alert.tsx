@@ -16,7 +16,7 @@ export default function Alert() {
             animate={{ y: 0 }}
             exit={{ y: -200 }}
             transition={{ duration: 0.5 }}
-            className=" flex flex-col items-center gap-2 z-50 absolute top-1 left-1/2 transform -translate-x-1/2 p-4 bg-white border-2 rounded-md max-w-100">
+            className=" flex flex-col items-center gap-2 z-50 absolute top-1 left-1/2 transform -translate-x-1/2 p-4 bg-white border-2 rounded-md max-w-100 w-[80%]">
             <h1 className="text-lg font-semibold">{AlertData.title}</h1>
             <h1 className="text-md text-gray-700 text-center">
               {AlertData.message}
