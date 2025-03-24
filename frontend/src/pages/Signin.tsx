@@ -10,6 +10,7 @@ export default function Signin() {
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingSampleData, setLoadingSampleData] = useState(false);
 
   const navigate = useNavigate();
   const Alert = useContext(AlertContext)
@@ -40,7 +41,7 @@ export default function Signin() {
   async function trySample() {
 
     Alert.alert("Note in sample data mode nothing can be edited or added you can only interact with the data allready present")
-
+    setLoadingSampleData(true)
     const res = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/auth/login`, {
       method: "POST",
       headers: {
@@ -48,7 +49,7 @@ export default function Signin() {
       },
       body: JSON.stringify({ email: "test@test", password: "test" }),
     });
-
+    setLoadingSampleData(false)
     if (res.status === 201) {
       const data = await res.json();
       const accessToken = data.accessToken;
@@ -160,9 +161,13 @@ export default function Signin() {
           </button>
           <button
             type="button"
-            className="border-1 border-slate-400 text-black rounded-md mt-3 p-2 font-semibold text-sm hover:cursor-pointer hover:bg-gray-100 transition delay-50 duration-300 ease-in-out h-9"
+            className="flex justify-center border-1 border-slate-400 text-black rounded-md mt-3 p-2 font-semibold text-sm hover:cursor-pointer hover:bg-gray-100 transition delay-50 duration-300 ease-in-out h-9"
             onClick={() => trySample()}>
-            Try With Sample Data
+            {`${loadingSampleData ? " " : "Try With Sample Data"}`}
+            <AiOutlineLoading
+              className="animate-spin"
+              style={{ display: !loadingSampleData ? "none" : "" }}
+            />
           </button>
           <br />
         </form>
