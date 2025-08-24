@@ -172,7 +172,7 @@ export default function Landing() {
           <FaChevronDown />
           <IconCard
             icon={PiChartScatterBold}
-            text="HabitLink then analyzes the connection between your chosen habit and the rest, giving you valuable insights into how they influence each other."
+            text="Correlink then analyzes the connection between your chosen habit and the rest, giving you valuable insights into how they influence each other."
             freeWidth={false}
           />
           <FaChevronDown />

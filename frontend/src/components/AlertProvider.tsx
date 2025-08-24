@@ -32,7 +32,7 @@ export default function AlertProvider(props: Props) {
   function alert( message: string){
     setShowing(true)
     setMessage(message)
-    setTitle("HabitLink Says")
+    setTitle("Correlink Says")
   }
   return (
     <AlertContext.Provider value={{
