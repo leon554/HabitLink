@@ -9,6 +9,7 @@ interface Settings{
     countUnscheduledCompletions: boolean
     dontShowRed: boolean
     dontShowStreaks: boolean
+    openOnLogPage: boolean
 }
 const initialSettings: Settings = {
     showDetails: true,
@@ -17,7 +18,8 @@ const initialSettings: Settings = {
     showRanks: false,
     countUnscheduledCompletions: false,
     dontShowRed: false,
-    dontShowStreaks: false
+    dontShowStreaks: false,
+    openOnLogPage: false,
 }
 interface SettingsType{
   settings: Settings 

@@ -4,6 +4,7 @@ import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
 import { SignUpResponses, type LemonSqueezyProduct, type UserType } from "../../utils/types";
 import { useLocation, useNavigate } from "react-router-dom";
+import { SettingsContext } from "./SettingsProvider";
 
 
 interface AuthType{
@@ -55,6 +56,8 @@ export default function AuthProvider(props: Props) {
     const [localUser, setLocalUser] = useState<UserType|null>(null)
     const [loading, setLoading] = useState(false)
 
+    const settings = useContext(SettingsContext)
+
     const [logOutLoading, setLogOutLoading] = useState(false)
     const [products, setProducts] = useState<LemonSqueezyProduct[]>([])
     const [captchaToken, setCaptchaToken] = useState("")
@@ -96,7 +99,6 @@ export default function AuthProvider(props: Props) {
         });
 
         if(error){
-            //alert("Product fetch error: " + error.message)
             setLoading(false)
             return
         }
@@ -112,7 +114,8 @@ export default function AuthProvider(props: Props) {
             setLoading(false)
             return
         }else{
-            protectedPaths.includes(currentPath) ? navigate(currentPath) : navigate("/dashboard"); 
+            protectedPaths.includes(currentPath) ? navigate(currentPath) : 
+            settings.settings.openOnLogPage ? navigate("/log") : navigate("/dashboard"); 
         }
 
         const { data, error} = await supabase.auth.getUser()

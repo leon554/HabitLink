@@ -40,6 +40,15 @@ export default function SettingsToggles() {
                     <Switch ticked={theme.dark ?? undefined} setStatus={(t) => theme.setDark(t)}/>
                 </div>
             </div>
+            <hr className="text-border2"/>
+            <div className="flex justify-between items-center gap-4">
+                <p className="text-xs text-subtext2">
+                    Open on Log page
+                </p>
+                <div>
+                    <Switch ticked={settings.openOnLogPage} setStatus={(t) => setSettings({...settings, openOnLogPage: t})}/>
+                </div>
+            </div>
         </div>
     )
 }
