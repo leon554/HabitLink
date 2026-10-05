@@ -122,7 +122,7 @@ export default function LogPage() {
                         </div>
                     ) : null
                 )}       
-                {user.habits.size < 5 ? 
+                {user.habits.size < 2 ? 
                 <div className="p-3 bg-panel1 border-1 border-border rounded-2xl shadow-md shadow-gray-200 dark:shadow-none mb-3 flex justify-between items-center">
                     <p className="text-subtext2 font-medium ">
                        🌱 Add new habit
