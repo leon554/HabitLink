@@ -224,3 +224,18 @@ export enum AchievementsEnum{
     perfection80 = 20,
     perfection50 = 21,
 }
+
+
+export type APISuccess<T> = {
+    success: true
+    response: T
+    message: string
+}
+
+export type APIFailure = {
+    success: false
+    response: null
+    message: string
+}
+
+export type APIResult<T> = APISuccess<T> | APIFailure

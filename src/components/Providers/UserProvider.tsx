@@ -13,6 +13,7 @@ import {type  HabitStats } from "../../utils/types";
 import Model from "../InputComponents/Model";
 import ButtonComp from "../primatives/ButtonComp";
 import { useNavigate } from "react-router-dom";
+import { HabitServiceLayer } from "@/service-layer/habit-service-layer";
 import { FaCheck } from "react-icons/fa";
 import { useAchievementChecks } from "../Hooks/useAchievementChecks";
 
@@ -414,24 +415,11 @@ export default function UserProvider(props: Props) {
         setLoading(false)
         
     }
-    async function getHabits(){
+    async function getHabits() {
         setLoading(true)
-        const userid = auth.getUserId()
-        let { data: habitsData, error } = await supabase
-            .from('habits')
-            .select('*')
-            .eq("user_id", userid)
-        if(error){
-            alert("Habit fetch error: " + error.message)
-        }
-        const habits = habitsData as HabitType[]
-        const habitMap = new Map<number, HabitType>()
-        habits.forEach(h => {
-            if(habitMap.has(Number(h.id))) {alert("Duplicate habits skipped"); return}
-            habitMap.set(Number(h.id), h)
-            
-        })
-        setHabits(habitMap)
+        const res = await HabitServiceLayer.getHabits(auth.getUserId())
+        if (res.success) setHabits(res.response)
+        else alert(res.message)
         setLoading(false)
     }
     async function getHabitsCompletions() {

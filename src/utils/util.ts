@@ -1,4 +1,4 @@
-import { HabitTypeE } from "./types"
+import { HabitTypeE, type APIFailure, type APIResult, type APISuccess } from "./types"
 
 export namespace Util{
 
@@ -152,5 +152,12 @@ export namespace Util{
         if(value === undefined) return 0
         if(!Number.isFinite(value)) return 0
         return isNaN(value) ? 0 : value
+    }
+
+    export function successAPICall<T>(response: T): APISuccess<T>{
+        return {success: true, response, message: ""}
+    }
+    export function failAPICall(message: string): APIFailure{
+        return {success: false, response: null, message}
     }
 }
