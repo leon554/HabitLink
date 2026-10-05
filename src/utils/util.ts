@@ -1,4 +1,4 @@
-import { HabitTypeE, type APIFailure, type APIResult, type APISuccess } from "./types"
+import { HabitTypeE, type APIFailure, type APISuccess } from "./types"
 
 export namespace Util{
 

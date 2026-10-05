@@ -3,7 +3,6 @@ import { AuthContext } from "./AuthProvider";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
 import {  type Achievement, type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType, type IssueType, type ReturnObj, type SubmitIssueType } from "../../utils/types";
-import { dateUtils } from "../../utils/dateUtils";
 import { Util } from "../../utils/util";
 import { GOAL_LIM_FREE, HABIT_LIM_FREE } from "../../utils/Constants";
 import { LockingLoading } from "@/utils/LockingLoad";
@@ -258,15 +257,9 @@ export default function UserProvider(props: Props) {
             return
         }
 
-        const userid = auth.getUserId()
-
-        const { error } = await supabase
-            .from('habits')
-            .insert([
-                { name,  description, icon: emoji, type, completionDays, user_id: userid, target, creationDate: Date.now()},
-            ])
-        if(error){
-            alert("Habit creation error: " + error.message)
+        const res = await HabitServiceLayer.createHabit(auth.getUserId(), name, description, completionDays, emoji, type, target)
+        if(!res.success){
+            alert(res.message)
             setLoading(false)
             return
         }
@@ -424,56 +417,29 @@ export default function UserProvider(props: Props) {
     }
     async function getHabitsCompletions() {
         setLoading(true)
-        const userid = auth.getUserId()
-
-        let { data: habitsCompletionsData, error } = await supabase
-            .from('habitCompletions')
-            .select('*')
-            .eq("user_id", userid)
-        if(error){
-            alert("Habit completion fetch error: " + error.message)
-        }
-        const habitCompletionsTemp = habitsCompletionsData as HabitCompletionType[]
-        const habitCompletionsMap = new Map<number, HabitCompletionType[]>()
-        habitCompletionsTemp.forEach(h => {
-            if(!habitCompletionsMap.has(h.habitId)){
-                habitCompletionsMap.set(h.habitId, [])
-            }
-            habitCompletionsMap.get(h.habitId)!.push(h)
-        })
-        setHabitsCompletions(habitCompletionsMap)
+        const res = await HabitServiceLayer.getHabitsCompletions(auth.getUserId())
+        if (res.success) setHabitsCompletions(res.response)
+        else alert(res.message)
         setLoading(false)
     }
     async function removeTodaysHabitCompletion(habitId: number){
         setLoading(true)
-        const completions = habitsCompletions.get(habitId)
-        if(!completions) return 
-
-        const completionsToBeDeleted = completions.filter(c => dateUtils.isDatesSameDay(new Date(Number(c.date)), new Date()))
-        const idsToBeDeleted =completionsToBeDeleted.map(c => Number(c.id))
-
-        const { error } = await supabase
-            .from('habitCompletions')
-            .delete()
-            .in('id', idsToBeDeleted)
-
-        if(error){
-            alert("Deletion Error: " + error.message)
+        const res = await HabitServiceLayer.removeTodaysHabitCompletion(habitsCompletions.get(habitId))
+        if(!res.success){
+            alert(res.message)
+            setLoading(false)
+            return
         }
-        await getHabitsCompletions()
+        if(res.response) await getHabitsCompletions()
         setLoading(false)
     }
     async function completeHabit(habitId: number, value: number, skip: boolean = false, date?: Date, notes?: string){
-        const userid = auth.getUserId()
-
         setLoading(true)
-        const { error } = await supabase
-            .from('habitCompletions')
-            .insert([
-                { habitId, data: value, date: date ? date.getTime() : Date.now(), user_id: userid, skip, notes},
-            ])
-        if(error){
-            alert("Habit Completion Error: " + error)
+        const res = await HabitServiceLayer.completeHabit(auth.getUserId(), habitId, value, skip, date, notes)
+        if(!res.success){
+            alert(res.message)
+            setLoading(false)
+            return
         }
         await getHabitsCompletions()
         setLoading(false)
@@ -482,13 +448,9 @@ export default function UserProvider(props: Props) {
         if(loading) return
         setLoading(true)
 
-        const {  error } = await supabase
-            .from('habits')
-            .update({ name: newName })
-            .eq('id', habitID)
-
-        if(error){
-            alert("Habit name update erorr: " + error.message)
+        const res = await HabitServiceLayer.updateHabitName(habitID, newName)
+        if(!res.success){
+            alert(res.message)
             setLoading(false)
             return
         }
@@ -501,19 +463,11 @@ export default function UserProvider(props: Props) {
         if(loading) return
         setLoading(true)
 
-        const { error: err1 } = await supabase
-            .from('habitCompletions')
-            .delete()
-            .eq('habitId', habitId)
-        const {error: err2 } = await supabase
-            .from("habits")
-            .delete()
-            .eq("id", habitId)
-
-        if(err1 || err2){
-            alert("Habit deletion error: " + err1?.message + err2?.message)
+        const res = await HabitServiceLayer.deleteHabit(habitId)
+        if(!res.success){
+            alert(res.message)
             setLoading(false)
-            return 
+            return
         }
 
         habits.delete(habitId)
@@ -524,13 +478,9 @@ export default function UserProvider(props: Props) {
         if(loading) return alert("Cant run wait for loading to finish")
         setLoading(true)
 
-        const { error } = await supabase
-            .from('habitCompletions')
-            .delete()
-            .eq('id', completionID)
-
-        if(error){
-            alert("Habit completion deletion error: " + error.message)
+        const res = await HabitServiceLayer.deleteHabitCompletion(completionID)
+        if(!res.success){
+            alert(res.message)
             setLoading(false)
             return
         }
@@ -780,22 +730,15 @@ export default function UserProvider(props: Props) {
     async function addNote(note: string, habitId: number){
         setLoading(true)
 
-        const { data, error } = await supabase
-            .from('habitCompletions')
-            .update({ notes: note})
-            .eq('habitId', habitId)
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .select();
-
-        if(error){
-            alert("Adding note error please try again")
-            console.error(error)
+        const res = await HabitServiceLayer.addNote(note, habitId)
+        if(!res.success){
+            alert(res.message)
+            console.error(res.message)
             setLoading(false)
             return
         }
 
-        const newComps = [...(habitsCompletions.get(habitId)?.filter(c => c.id !== data[0].id) ?? []), data[0]];
+        const newComps = [...(habitsCompletions.get(habitId)?.filter(c => c.id !== res.response.id) ?? []), res.response];
         const newMap = new Map(habitsCompletions); 
         newMap.set(habitId, newComps);  
         setHabitsCompletions(newMap);
