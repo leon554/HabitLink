@@ -16,7 +16,7 @@ export default function Layout() {
         <div >
             <Alert/>
             <Navbar/>
-            {auth.loading || theme.loading? 
+            {(auth.loading || theme.loading)? 
                 <div className="w-full flex justify-center">
                     <AiOutlineLoading className="animate-spin mt-30 text-highlight" size={40}/>
                 </div> :

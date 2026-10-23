@@ -19,12 +19,14 @@ import { FaCheck } from "react-icons/fa";
 import { useIsMobile } from "./Hooks/useIsMobile";
 import { triggerHaptic } from "tactus";
 import { useIsPwa } from "./Hooks/useIsPwa";
+import { UserContext } from "./Providers/UserProvider";
 
 
 
 
 export default function Navbar() {
     const {session, logout, logOutLoading} = useContext(AuthContext)
+    const HC = useContext(UserContext)
     const [blurCreate, setBlurCreate] = useState(false)
     const [blurSettings, setBlurSettings] = useState(false)
     const navitgate = useNavigate()
@@ -82,7 +84,7 @@ export default function Navbar() {
                                     Habits
                                 </button>
                             </Link>
-                            <Link to={"/goals"}>
+                            <Link to={"/goals"} onClick={() => HC.setCurrentGoal(null)}>
                                 <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 text-sm  text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
                                     Goals
                                 </button>

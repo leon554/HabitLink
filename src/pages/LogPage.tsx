@@ -11,12 +11,15 @@ import { useNavigate } from "react-router-dom"
 import { triggerHaptic } from "tactus"
 import ButtonComp from "@/components/primatives/ButtonComp"
 import { useIsMobile } from "@/components/Hooks/useIsMobile"
+import { AuthContext } from "@/components/Providers/AuthProvider"
 
 export default function LogPage() {
     const [showSettings, setShowSettings] = useState(false)
     const isMobile = useIsMobile()
 
-    const user = useContext(UserContext)
+    const HC = useContext(UserContext)
+    const AC = useContext(AuthContext)
+
     const navigate = useNavigate()
     const {settings, setSettings} = useContext(SettingsContext)
 
@@ -79,7 +82,7 @@ export default function LogPage() {
                 </div>
             </div>
             : ""}
-            {Util.fetchAllMapItems(user.habits).length == 0 ? 
+            {Util.fetchAllMapItems(HC.habits).length == 0 && !(HC.loading || AC.loading) ? 
             <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border mt-2 p-7 flex flex-col gap-4">
                 <p className="text-lg text-title font-medium leading-none ">
                     No Habits :(
@@ -108,21 +111,21 @@ export default function LogPage() {
             </div>
             :
             <div className="w-[90%] max-w-[600px] flex flex-col gap-2 overflow-auto no-scrollbar rounded-2xl ">
-                {Array.from(user.habits.values()).map((h, i) =>
-                    h.type === HabitTypeE.Normal && (!settings.showDue || HabitUtil.isDueToday(h, user.habitsCompletions.get(h.id))) ? (
+                {Array.from(HC.habits.values()).map((h, i) =>
+                    h.type === HabitTypeE.Normal && (!settings.showDue || HabitUtil.isDueToday(h, HC.habitsCompletions.get(h.id))) ? (
                         <div className="w-full" key={`normal-${i}`}>
                             <HabitLogCard habit={h} />
                         </div>
                     ) : null
                 )}
-                {Array.from(user.habits.values()).map((h, i) =>
-                    h.type !== HabitTypeE.Normal && !settings.showNormal && (!settings.showDue || HabitUtil.isDueToday(h, user.habitsCompletions.get(h.id))) ? (
+                {Array.from(HC.habits.values()).map((h, i) =>
+                    h.type !== HabitTypeE.Normal && !settings.showNormal && (!settings.showDue || HabitUtil.isDueToday(h, HC.habitsCompletions.get(h.id))) ? (
                         <div className="w-full" key={`alt-${i}`}>
                             <HabitLogCard habit={h} />
                         </div>
                     ) : null
                 )}       
-                {user.habits.size < 2 ? 
+                {HC.habits.size < 2 ? 
                 <div className="p-3 bg-panel1 border-1 border-border rounded-2xl shadow-md shadow-gray-200 dark:shadow-none mb-3 flex justify-between items-center">
                     <p className="text-subtext2 font-medium ">
                        🌱 Add new habit

@@ -32,7 +32,6 @@ function App() {
           <AlertProvider>
           <AuthProvider>
           <UserProvider>
-
             <Routes>
               <Route element={<Layout/>}>
                 <Route path="/auth" element={<AuthPage/>}/>
@@ -54,7 +53,6 @@ function App() {
                 <Route path="achievements" element={<Achievements/>}/>
               </Route>
             </Routes>
-            
           </UserProvider>
           </AuthProvider>
           </AlertProvider>
