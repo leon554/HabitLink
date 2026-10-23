@@ -28,7 +28,7 @@ export namespace Util{
     export function pretifyData(data: string | undefined | number, type: HabitTypeE | undefined){
         if(data == undefined || !HabitTypeE) return "Loading..."
         if(type == HabitTypeE.Distance_Based){
-            return `${Number(data)}km`
+            return `${Math.round(Number(data)*100)/100}km`
         }
         if(type == HabitTypeE.Time_Based){
             return secondsToString(Number(data))
