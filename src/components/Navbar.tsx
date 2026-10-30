@@ -51,9 +51,6 @@ export default function Navbar() {
                                 HabitLink
                             </p>
                         </div>
-                        <p className="text-xs text-subtext3">
-                            (Beta 1.1)
-                        </p>
                     </>
                     }
                 </div>
@@ -150,6 +147,7 @@ export default function Navbar() {
                                 </button>
                                 <button className="hover:cursor-pointer flex justify-center items-center w-full " onClick={() => {
                                     triggerHaptic()
+                                    HC.setCurrentGoal(null)
                                     navitgate("/goals")
                                 }}>
                                     <TbTargetArrow className={` transition-all duration-150 ease-in-out ${location.pathname === "/goals" ? "text-highlight" : "text-title"}`}/>

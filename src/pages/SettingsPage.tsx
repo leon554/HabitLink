@@ -134,9 +134,9 @@ export default function SettingsPage() {
                                         </p>
                                         : ""}
                                     </div>
-                                        <p className={`text-xs text-btn-text ${b.status == "pending" ? "bg-red-500" : b.status == "reviewing" ? "bg-orange-500" : "bg-btn"} py-0.5 font-medium px-3 w-fit rounded-xl flex pb-1`}>
-                                            {Util.capitilizeFirst(b.status)}
-                                        </p>
+                                    <p className={`text-xs text-btn-text ${b.status == "pending" ? "bg-red-500" : b.status == "reviewing" ? "bg-orange-500" : "bg-btn"} py-0.5 font-medium px-3 w-fit rounded-xl flex pb-1`}>
+                                        {Util.capitilizeFirst(b.status)}
+                                    </p>
                                 </div>
                             )
                         })}
