@@ -25,74 +25,60 @@ import { dateUtils } from "@/utils/dateUtils"
 
 
 export default function GoalsPage() {
-
     const HC = useContext(UserContext)
     const auth = useContext(AuthContext)
-    const startValue = HC.getCurrentGoal()?.startValue ?? 0
-    const currenValue = useCurrentGoalValue()
-    const targetValue = HC.getCurrentGoal()?.targetValue ?? 0
-    const progress = Util.calculateProgress(startValue, currenValue, targetValue)
-    const isGoalFinished =   progress >= 1;
-    const goal = HC.getCurrentGoal()
+
     const navigate = useNavigate()
     const isMobile = useIsMobile()
-    const goals = useMemo(() => Array.from(HC.goals.values()).filter(g => !g.archived), [HC.goals, HC.habitsCompletions, HC.goalCompletions])
 
-    const [timeLeft, setTimeLeft] = useState(Array.from(HC.goals.values())
-        .filter(v => !v.archived)
-        .map(v => {
-            return Math.abs((v.completionDate ?? 0) - Date.now())
-        })
-    );
-    const startTime = Array.from(HC.goals.values()).map(g => new Date(g.created_at).getTime())
-    const completionTime = Array.from(HC.goals.values()).map(g => g.completionDate)
+    const selectedGoal = HC.getCurrentGoal()
+    const selectedGoalStats = {
+        startValue: selectedGoal?.startValue ?? 0,
+        currenValue: useCurrentGoalValue(),
+        targetValue: selectedGoal?.targetValue ?? 0
+    }
+
+    const selectedGoalProgress = Util.calculateProgress(selectedGoalStats.startValue, selectedGoalStats.currenValue, selectedGoalStats.targetValue)
+    const isSelectedGoalAchieved = selectedGoalProgress >= 1;
+
+    const baseGoals = useMemo(() => Array.from(HC.goals.values()).sort((a,b) => (HC.goalProgress.get(b.id) ?? 0) - (HC.goalProgress.get(a.id) ?? 0)), [HC.goals, HC.habitsCompletions, HC.goalCompletions])
+    const unArchivedGoals = baseGoals.filter(g => !g.archived)
+
+    const [timeLeftForGoals, setTimeLeftForGoals] = useState(unArchivedGoals.map(v => Math.abs((v.completionDate ?? 0) - Date.now())));
+    const goalStartTimes = baseGoals.map(g => new Date(g.created_at).getTime())
+    const goalCompletionTimes = baseGoals.map(g => g.completionDate)
 
     useEffect(() => {
         if(HC.goals.size == 0) return 
 
-        if(timeLeft.length == 0){
-            setTimeLeft(Array.from(HC.goals.values())
-            .filter(v => !v.archived)
-            .map(v => {
-                return Math.abs((v.completionDate ?? 0) - Date.now())
-            }))
-        }
+        const updateTimeLeftForGoals = () => setTimeLeftForGoals(prev =>prev.map((_, i) => (goalCompletionTimes[i] ?? 0) - Date.now()))
+        updateTimeLeftForGoals()
 
-        function calcTime(){
-            setTimeLeft(prev =>
-                prev.map((_, i) => (completionTime[i] ?? 0) - Date.now())
-            );
-        }
-        calcTime()
-        const intervalID = setInterval(calcTime, 1000);
-
-        return () => {
-            clearInterval(intervalID);
-        }
+        const intervalID = setInterval(updateTimeLeftForGoals, 1000);
+        return () =>  clearInterval(intervalID)
     }, [HC.currentGaol, HC.goals]);
-
 
 
     useEffect(() => {
         const updateGoal = async () => {
-            if(isGoalFinished && !HC.getCurrentGoal()?.completed){
-                await HC.compleGoal(HC.getCurrentGoal()?.id!)
-                const updatedGoals = Util.updateMap(HC.goals, HC.currentGaol!, {...HC.getCurrentGoal(), completed: true} as GoalType)
+            if(isSelectedGoalAchieved && !selectedGoal?.completed){
+                await HC.compleGoal(selectedGoal?.id!)
+                const updatedGoals = Util.updateMap(HC.goals, HC.currentGaol!, {...selectedGoal, completed: true} as GoalType)
                 HC.setGaols(updatedGoals)
-                const newGoalMap = Util.updateMap<number, GoalType>(HC.goals, HC.getCurrentGoal()!.id, {...HC.getCurrentGoal(), completed: true} as GoalType)
+                const newGoalMap = Util.updateMap<number, GoalType>(HC.goals, selectedGoal!.id, {...selectedGoal, completed: true} as GoalType)
                 HC.setGaols(newGoalMap)
             }
         }
         updateGoal()
-    }, [isGoalFinished])
+    }, [isSelectedGoalAchieved])
 
-     useEffect(() => {
+    useEffect(() => {
         window.scrollTo(0, 0);
     }, [])
 
     return (
         <div className={`w-full flex justify-center ${isMobile ? "mb-24 mt-6" : "mt-20 mb-10"}`}>
-            {!HC.getCurrentGoal() && Util.fetchAllMapItems(HC.goals).length != 0 ?
+            {!selectedGoal && Util.fetchAllMapItems(HC.goals).length != 0 ?
                 <div className="w-full flex flex-col items-center gap-2.5">
                     <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] bg-panel1 text-title  rounded-2xl p-4 outline-1 outline-border flex justify-center flex-col items-center">
                         <p className="text-2xl font-medium">
@@ -100,7 +86,7 @@ export default function GoalsPage() {
                         </p>
                     </div>
                     <div className="flex flex-col items-stretch gap-2.5 mb-2 w-[90%] max-w-[600px]">
-                        {goals.map((g, i) => {
+                        {unArchivedGoals.map((g, i) => {
                             return(
                                 <div key={i} className={`hover:cursor-pointer gap-2 shadow-md shadow-gray-200 dark:shadow-none grow-1 bg-panel1 rounded-2xl outline-1 outline-border p-3.5 flex flex-col justify-between`}
                                     onClick={() => {
@@ -118,7 +104,7 @@ export default function GoalsPage() {
                                                     Goal Time Progress
                                                 </p>
                                                 <p className="text-sm font-medium text-subtext2">
-                                                    {Math.round((1 - (timeLeft[i])/(completionTime[i] - startTime[i])) * 100*1000)/1000}%
+                                                    {Math.round((1 - (timeLeftForGoals[i])/(goalCompletionTimes[i] - goalStartTimes[i])) * 100*1000)/1000}%
                                                 </p>
                                                 <p className="text-xs text-center text-subtext3 whitespace-nowrap mt-1">
                                                     Goal Progress
@@ -136,7 +122,7 @@ export default function GoalsPage() {
                                                     </p>
                                                     
                                                 </div> :
-                                                (1 - (timeLeft[i])/(completionTime[i] - startTime[i])) * 100 >= 100 ?
+                                                (1 - (timeLeftForGoals[i])/(goalCompletionTimes[i] - goalStartTimes[i])) * 100 >= 100 ?
                                                  <div className="flex items-center gap-2 justify-center outline-1 py-1.5 rounded-lg outline-red-500/30 bg-red-500/20 dark:bg-panel1">
                                                     <p className="text-sm text-red-500 flex items-center gap-3 text-center">
                                                         Times Up
@@ -145,7 +131,7 @@ export default function GoalsPage() {
                                                 :
                                                 <div className="flex flex-col w-full gap-1.5">
                                                     <p className="text-xs whitespace-nowrap text-subtext3">
-                                                        Progress: {Math.round(HC.goalProgress.get(g.id) ?? 0)}% | Time Left:  {dateUtils.formatTime(completionTime[i] - Date.now())}
+                                                        Progress: {Math.round(HC.goalProgress.get(g.id) ?? 0)}% | Time Left:  {dateUtils.formatTime(timeLeftForGoals[i])}
                                                     </p>
                                                     <div className="w-full">
                                                         <ProgressBar min={0} max={100} current={Math.round(HC.goalProgress.get(g.id) ?? 0)} height={10}/>
@@ -158,13 +144,13 @@ export default function GoalsPage() {
                                 </div>
                             )
                         })}
-                        {Array.from(HC.goals.values()).some(g => g.archived) ? 
+                        {baseGoals.some(g => g.archived) ? 
                         <div className="shadow-md shadow-gray-200 dark:shadow-none max-w-[600px] bg-panel1 w-full rounded-2xl p-5  outline-1 outline-border">
                             <p className="text-subtext1 font-medium">
                                 Archived Goals
                             </p>
                             <div className="mt-3 flex  flex-wrap gap-3">
-                                {Array.from(HC.goals.values()).filter(g => g.archived).map(g => {
+                                {baseGoals.filter(g => g.archived).map(g => {
                                     return(
                                         <div className="outline-1 outline-border2 bg-panel3 rounded-md p-1.5 px-2 hover:cursor-pointer  transition-all duration-200 ease-in-out"
                                             onClick={() => HC.setCurrentGoal(g.id)}>
@@ -212,7 +198,7 @@ export default function GoalsPage() {
             :
             <div className="w-full flex flex-col items-center gap-3">
                 <GoalTitlePanel/> 
-                {!isGoalFinished? 
+                {!isSelectedGoalAchieved? 
                     <CountDown/> :
                     <GoalCompletionPanel/>
                 }
@@ -231,7 +217,7 @@ export default function GoalsPage() {
                     <AvgStrengthPanel/>
                 </div>
                 <GoalSummary/>
-                {goal?.type != HabitTypeE.Normal && goal?.linkedHabit == null ?
+                {selectedGoal?.type != HabitTypeE.Normal && selectedGoal?.linkedHabit == null ?
                     <LogChart/> : null
                 }
                 <AssociatedHabits/>
